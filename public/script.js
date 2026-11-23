@@ -1,7 +1,6 @@
 (function () {
   const root = document.documentElement;
 
-  // ---------------- Theme (default dark, remember)
   const storedTheme = localStorage.getItem("theme");
   if (storedTheme === "light" || storedTheme === "dark") {
     root.classList.toggle("dark", storedTheme === "dark");
@@ -9,7 +8,6 @@
     root.classList.add("dark");
   }
 
-  // ---------------- Elements
   const home        = document.getElementById("home");
   const appWindows  = Array.from(document.querySelectorAll(".app-window"));
   const launchers   = Array.from(document.querySelectorAll(".launch[data-app]"));
@@ -18,13 +16,12 @@
   const darkIcon    = document.getElementById("darkIcon");
   const soundIcon   = document.getElementById("soundIcon");
 
-  // ---------------- Pre-rendered Audio / SFX
   const clickEl   = document.getElementById("sfxClick");
   const darkOnEl  = document.getElementById("sfxDarkOn");
   const darkOffEl = document.getElementById("sfxDarkOff");
   const failEl    = document.getElementById("sfxFail");
 
-  let sfxOn = (localStorage.getItem("sfx") || "on") === "on";
+  let sfxOn = localStorage.getItem("sfx") === "on";
   if (clickEl)   clickEl.volume   = 0.35;
   if (darkOnEl)  darkOnEl.volume  = 0.5;
   if (darkOffEl) darkOffEl.volume = 0.5;
@@ -74,7 +71,6 @@
     fail() { playEl(failEl); }
   };
 
-  // ---------------- Theme + Sound toggles
   function setDarkIconByTheme() {
     const isDark = root.classList.contains("dark");
     if (darkIcon) darkIcon.src = isDark ? "assets/icons/moon.svg" : "assets/icons/sun.svg";
@@ -109,7 +105,6 @@
     });
   }
 
-  // ---------------- Global click SFX for buttons (left mouse only)
   document.addEventListener("pointerdown", (e) => {
     if (e.button !== 0) return;
     const btn = e.target.closest("button");
@@ -127,7 +122,6 @@
     SFX.click();
   }, { capture: true });
 
-  // ---------------- Windows
   let z = 300;
   function bringToFront(el) { z += 1; el.style.zIndex = String(z); }
   function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
@@ -286,7 +280,6 @@
     }
   });
 
-  // ---------------- View More (projects)
   document.addEventListener("click", (e) => {
     const btn = e.target.closest(".viewmore");
     if (!btn) return;
@@ -306,7 +299,6 @@
     }
   });
 
-  // ---------------- Contact (mailto + tiny success)
   const form = document.getElementById("contactForm");
   const captchaQ = document.getElementById("captchaQuestion");
   const captchaA = document.getElementById("captchaAnswer");
@@ -370,7 +362,6 @@ fetch(form.action, {
     });
   }
 
-  // ---------------- Buddy (GIF + music; start paused)
   const buddy = document.getElementById("buddy");
   const buddyAudio = document.getElementById("buddyAudio");
   if (buddy && buddyAudio) {
